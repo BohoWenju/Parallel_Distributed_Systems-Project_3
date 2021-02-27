@@ -47,7 +47,7 @@ void d_fill(float* patches,float* d,int i,int patchsize,float* gauss,int n){
     else{
       for (int j=0; j<patchsize*patchsize; j++)
         sum+=gauss[j]*powf(patches[f_index+j]-patches[s_index+j],2);
-      d[index*n*n+i]=sum;
+      d[index*n*n+i]=expf(-sum/powf(filtsigma,2));
     }
   }
 }

@@ -57,7 +57,7 @@ void apply_Noise(int rows,int cols,float** In,float** Out,float sigma){
 }
 
 __global__
-void d_fill(float* B,float* d,float* patches,int i,int patchsize,float* gauss,int n){
+void d_fill(float* B,float* d,float* patches,int i,int patchsize,float* gauss,int n,float filtsigma){
 
   // each block has i.e. p^2 elements starting from the top row
   // therefore number of cols of specific block is n
@@ -118,7 +118,7 @@ void d_fill(float* B,float* d,float* patches,int i,int patchsize,float* gauss,in
         for (int j=0; j<patchsize; j++)
           for (int k=0; k<patchsize; k++)
             sum+=gauss[j]*powf(sh_patches[f_index+k*patchsize+j]-sh_patches[s_index+k*patchsize+j],2);
-        d[index*n*n+i]=sum;
+        d[index*n*n+i]=expf(-sum/powf(filtsigma,2));
         }
       }
     }
@@ -131,7 +131,7 @@ void d_fill(float* B,float* d,float* patches,int i,int patchsize,float* gauss,in
       for (int j=0; j<patchsize; j++)
         for (int k=0; k<patchsize; k++)
           sum+=gauss[j]*powf(sh_patches[f_index+k*patchsize+j]-patches[s_index+k*patchsize+j],2);
-      d[index*n*n+i]=sum;
+      d[index*n*n+i]=expf(-sum/powf(filtsigma,2));
     }
 }
 
@@ -238,7 +238,7 @@ void filter(float** A,int n,int patchsize,float patchsigma,float filtsigma){
   int r_shared_arr=shared_arr/n+2*h_patch;
   size_t size_patches=(r_shared_arr*r_shared_arr)*sizeof(float);
     for (int i=0; i<(n*n); i++)
-        d_fill<<<(n*n+NTHREADS_PER_BLOCK-1)/NTHREADS_PER_BLOCK,NTHREADS_PER_BLOCK,size_patches>>>(dev_b,dev_d,dev_patches,i,patchsize,dev_gauss,n);
+        d_fill<<<(n*n+NTHREADS_PER_BLOCK-1)/NTHREADS_PER_BLOCK,NTHREADS_PER_BLOCK,size_patches>>>(dev_b,dev_d,dev_patches,i,patchsize,dev_gauss,n,filtsigma);
 
   cudaFree(dev_patches);
   cudaFree(dev_b);
