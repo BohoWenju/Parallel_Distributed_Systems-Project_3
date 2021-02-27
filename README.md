@@ -29,6 +29,7 @@ i.e. :
  results.
  
  Finally, due to my machine being unable to run a Cuda application all programms were also implemented in order to run in google colab.
+ 
  **Use** : **make all** to compile all default programms and **make colab** to compile all colab versions.
  Also, **make clean** and **make clean_colab** to remove the corresponding files.
  
