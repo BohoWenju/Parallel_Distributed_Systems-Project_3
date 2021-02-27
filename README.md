@@ -25,6 +25,13 @@ i.e. :
  in being chopped in blocks and my following a logic,kinda like a 2d stencil, the patches of the elements of the specific block are 
  stored in shared memory.
  
+ Parameters inside the programm : patchsize,filtsigma(0.02),patchsigma(5/3),noise_sigma(0.001).In the parentheses are values for better,more visible
+ results.
+ 
+ Finally, due to my machine being unable to run a Cuda application all programms were also implemented in order to run in google colab.
+ **Use** : **make all** to compile all default programms and **make colab** to compile all colab versions.
+ Also, **make clean** and **make clean_colab** to remove the corresponding files.
+ 
  
  
  
