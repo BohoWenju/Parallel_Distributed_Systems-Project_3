@@ -331,9 +331,9 @@ int main(int argc,char* argv[]){
   //                  PARAMETERS
 
   int patchsize=5;
-  float noise_sigma=0.01;
-  float patchsigma=0.01;
-  float filtsigma=1;
+  float noise_sigma=0.001;
+  float patchsigma=5/3;
+  float filtsigma=0.02;
 
   //*********************************************
 

@@ -32,7 +32,7 @@ void apply_Noise(int rows,int cols,float** In,float** Out,float sigma){
 }
 
 __global__
-void d_fill(float* B,float* d,float* patches,int i,int patchsize,float* gauss,int n,int size_patches){
+void d_fill(float* B,float* d,float* patches,int i,int patchsize,float* gauss,int n,int size_patches,float filtsigma){
 
   // each block has i.e. p^2 elements starting from the top row
   // therefore number of cols of specific block is n
@@ -214,7 +214,7 @@ void filter(float** A,int n,int patchsize,float patchsigma,float filtsigma){
   int r_shared_arr=shared_arr/n+2*h_patch;
   size_t size_patches=(r_shared_arr*r_shared_arr)*sizeof(float);
     for (int i=0; i<(n*n); i++)
-        d_fill<<<(n*n+NTHREADS_PER_BLOCK-1)/NTHREADS_PER_BLOCK,NTHREADS_PER_BLOCK,size_patches>>>(dev_b,dev_d,dev_patches,i,patchsize,dev_gauss,n,size_patches);
+        d_fill<<<(n*n+NTHREADS_PER_BLOCK-1)/NTHREADS_PER_BLOCK,NTHREADS_PER_BLOCK,size_patches>>>(dev_b,dev_d,dev_patches,i,patchsize,dev_gauss,n,size_patches,filtsigma);
 
   cudaFree(dev_patches);
   cudaFree(dev_b);
@@ -305,12 +305,15 @@ int main(int argc,char* argv[]){
 // creating a new file with name image_name+"_noised.txt"
 // to store the output
 
-
+  //                  PARAMETERS
+  int patchsize=5;
+  float noise_sigma=0.001;
+  float patchsigma=5/3;
+  float filtsigma=0.02;
 
   //*********************************************
 
   //             NOISE PARSING
-  float noise_sigma=0.01;
   float** n_img_Arr=(float**)malloc(rows*sizeof(float*));
   for (int i=0; i<rows; i++)
     n_img_Arr[i]=(float*)malloc(cols*sizeof(float));
@@ -346,10 +349,7 @@ int main(int argc,char* argv[]){
   //*******************************************
 
   //          patch/Filter implementation
-  //                  PARAMETERS
-  int patchsize=5;
-  float patchsigma=0.01;
-  float filtsigma=1;
+
 
   //          Initializing residual
   float** residual=(float**)malloc(rows*sizeof(float*));
