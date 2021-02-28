@@ -22,7 +22,8 @@ i.e. :
  
  **Non_local_shared.cu** : For the final implementation of the Non_local means algorithm the shared memory property
  of each block in the GPU is being taken into considerations for code optimization.
- During the calculation of the d_array (where d holds the term : exp(-dist/pow(filtsigma,2)) ), the expanded image 
+ During the calculation of the d_array
+ (where d holds the term : exp(-dist/pow(filtsigma,2)) ), the expanded image 
  is being chopped in blocks and by following a logic,kinda like a 2d stencil, the patches of the elements of the specific block are 
  stored in shared memory.
  
