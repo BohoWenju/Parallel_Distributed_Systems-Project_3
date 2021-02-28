@@ -7,7 +7,7 @@ i.e. :
     ./script_name img_name.txt dim1xdim1
     
  To help with the conversion of an image to .txt a matlab script was created called image_convert_2_txt.m .
- In order to view the resulting image you can take advantage of the show_image.m natlab script.
+ In order to view the resulting image you can take advantage of the show_image.m matlab script.
  
  # Implementations
  
