@@ -31,7 +31,7 @@ i.e. :
  results.
  
  Finally, due to my machine being unable to run a Cuda application all programms were also implemented in order to run in google colab,were parameteres such as
- rows,cols must be altered within the program.
+ rows,cols and name of file must be altered within the program.
  
  **Use** : **make all** to compile all default programms and **make colab** to compile all colab versions.
  Also, **make clean** and **make clean_colab** to remove the corresponding files.
